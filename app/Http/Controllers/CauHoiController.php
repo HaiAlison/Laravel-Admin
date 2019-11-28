@@ -72,4 +72,14 @@ class CauHoiController extends Controller
 
         return redirect()->route('cau-hoi.danh-sach')->with('thongbao','Xóa câu hỏi thành công');
     }
+    public function showDeleted(){
+        $listCauHoiRestore = CauHoi::onlyTrashed()->get();
+        $listLinhVuc = LinhVuc::all();
+        return view('cau-hoi.ds-cau-hoi', compact('listCauHoiRestore','listLinhVuc'));
+    }
+    
+    public function reStore($id){
+        CauHoi::withTrashed()->find($id)->restore();
+        return redirect()->route('cau-hoi.danh-sach')->with('thongbao','Khôi phục câu hỏi thành công');
+    }
 }

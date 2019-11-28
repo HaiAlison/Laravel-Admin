@@ -10,7 +10,7 @@
         <!-- User box -->
         <div class="user-box">
             <div class="user-img">
-                <img src="{{ asset('assets/images/quan-tri-vien/'.Auth::user()->anh_dai_dien) }}" width="50px" alt="user-img" title="Mat Helme" class="rounded-circle img-fluid">
+            <img @if(Auth::user()->anh_dai_dien=="") src="{{ asset('assets/images/quan-tri-vien/user-empty.png') }}" @else src="{{ asset('assets/images/quan-tri-vien/'.Auth::user()->anh_dai_dien) }}" @endif width="50px" alt="user-img" title="Mat Helme" class="rounded-circle img-fluid">
                 <a href="javascript:void(0);" class="user-edit"><i class="mdi mdi-pencil"></i></a>
             </div>
     

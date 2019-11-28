@@ -13,14 +13,27 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Danh sách lĩnh vực</h4>
-                                <a style="margin-bottom:10px" href="{{ route('linh-vuc.them-moi') }}" class="btn btn-info btn-rounded waves-effect waves-light">
+                                <h4 class="header-title">Danh sách lĩnh vực @if(isset($listLinhVucRestore)) đã xóa @endif</h4>
+                                @if(!isset($listLinhVucRestore))
+                                <div style="display:flex;justify-content: center;align-items:center;">
+                                    <a style="margin-bottom:10px" href="{{ route('linh-vuc.them-moi') }}" class="btn btn-info btn-rounded waves-effect waves-light">
+                                                <span class="btn-label">
+                                                <i class=" fas fa-plus">
+                                                </i>
+                                                </span>Thêm mới<i>
+                                                </i>
+                                    </a>
+                                    <a style="margin-bottom:10px;margin-left:10px" href="{{ route('linh-vuc.restore') }}" class="btn btn-success btn-rounded waves-effect waves-light">
                                             <span class="btn-label">
-                                            <i class=" fas fa-plus">
+                                            <i class="mdi mdi-restore">
                                             </i>
-                                            </span>Thêm mới<i>
+                                            </span>Phục hồi<i>
                                             </i>
                                 </a>
+                                </div>
+                                @else
+                                <a style="margin-bottom:10px" href="{{ route('quan-tri-vien.danh-sach') }}" class="btn btn-primary btn-rounded waves-effect waves-light">Trở về danh sách</a>
+                                @endif
                                 <table id="linhvuc-datatable" class="table dt-responsive nowrap">
                                     <thead>
                                         <tr>
@@ -31,34 +44,66 @@
                                     </thead>
                                 
                                     <tbody>
-                                        @foreach($listLinhVuc as $linhVuc)
-                                        <tr>
-                                            <td>{{ $linhVuc->id }}</td>
-                                            <td>{{ $linhVuc->ten_linh_vuc }} </td>
-                                            <td>
-                                            <a href="{{ route('linh-vuc.cap-nhat',['id'=> $linhVuc->id]) }}" class="btn btn-purple waves-effect waves-light"><i class=" mdi mdi-pencil-outline"></i></a>
-                                            <button onclick="del()" type="button" class="btn btn-danger waves-effect waves-light "><i class="fe-trash-2"></i></button>
-                                            <script type="text/javascript">
-                                                function del(){
-                                                    Swal.fire({
-                                                    title: 'có muốn xóa không?',
-                                                    text: "Bạn chắn với điều này chứ!",
-                                                    type: 'warning',
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: '#3085d6',
-                                                    cancelButtonColor: '#d33',
-                                                    confirmButtonText: 'Có',
-                                                    cancelButtonText:'Không'
-                                                    }).then((result) => {
-                                                    if (result.value) {
-                                                        window.location.href = "{{ route('linh-vuc.xoa',['id'=> $linhVuc->id]) }}";
-                                                    }
-                                                    })
-                                                };
-                                            </script>
-                                           </td>
-                                        </tr>
-                                        @endforeach
+                                    @if(isset($listLinhVucRestore))
+                                     <!-- Restore -->
+                                        @foreach($listLinhVucRestore as $linhVuc)
+                                            <tr>
+                                                <td>{{ $linhVuc->id }}</td>
+                                                <td>{{ $linhVuc->ten_linh_vuc }} </td>
+                                                <td>
+                                                <a href="{{ route('linh-vuc.xu-ly-restore',['id'=> $linhVuc->id]) }}"  class="btn btn-success waves-effect waves-light "><i class="mdi mdi-restore"></i></a>
+                                                <!-- <script type="text/javascript">
+                                                    function del(){
+                                                        Swal.fire({
+                                                        title: 'có muốn khôi phục không?',
+                                                        text: "Bạn chắn với điều này chứ!",
+                                                        type: 'question',
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: '#3085d6',
+                                                        cancelButtonColor: '#d33',
+                                                        confirmButtonText: 'Có',
+                                                        cancelButtonText:'Không'
+                                                        }).then((result) => {
+                                                        if (result.value) {
+                                                            window.location.href = "{{ route('linh-vuc.xu-ly-restore',['id'=> $linhVuc->id]) }}";
+                                                        }
+                                                        })
+                                                    };
+                                                </script> -->
+                                            </td>
+                                            </tr>
+                                            @endforeach
+                                    @else
+                                                <!-- Danh sách -->
+                                            @foreach($listLinhVuc as $linhVuc)
+                                            <tr>
+                                                <td>{{ $linhVuc->id }}</td>
+                                                <td>{{ $linhVuc->ten_linh_vuc }} </td>
+                                                <td>
+                                                <a href="{{ route('linh-vuc.cap-nhat',['id'=> $linhVuc->id]) }}" class="btn btn-purple waves-effect waves-light"><i class=" mdi mdi-pencil-outline"></i></a>
+                                                <button data-href="{{ route('linh-vuc.xoa',['id'=> $linhVuc->id]) }}" type="button" class="btn btn-danger waves-effect waves-light change-status"><i class="fe-trash-2"></i></button>
+                                                <!-- <script type="text/javascript">
+                                                    function del(){
+                                                        Swal.fire({
+                                                        title: 'có muốn xóa không?',
+                                                        text: "Bạn chắn với điều này chứ!",
+                                                        type: 'warning',
+                                                        showCancelButton: true,
+                                                        confirmButtonColor: '#3085d6',
+                                                        cancelButtonColor: '#d33',
+                                                        confirmButtonText: 'Có',
+                                                        cancelButtonText:'Không'
+                                                        }).then((result) => {
+                                                        if (result.value) {
+                                                            window.location.href = "{{ route('linh-vuc.xoa',['id'=> $linhVuc->id]) }}";
+                                                        }
+                                                        })
+                                                    };
+                                                </script> -->
+                                            </td>
+                                            </tr>
+                                            @endforeach
+                                    @endif
                                     </tbody>
                                 </table>
 

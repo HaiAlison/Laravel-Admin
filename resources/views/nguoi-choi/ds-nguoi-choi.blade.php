@@ -12,18 +12,30 @@
                     <div class="col-12" >
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Danh sách người chơi</h4>
-                                <a style="margin-bottom:10px" href="{{ route('nguoi-choi.them-moi') }}" class="btn btn-info btn-rounded waves-effect waves-light">
+                                <h4 class="header-title">Danh sách người chơi @if(isset($listNguoiChoiRestore)) đã xóa @endif</h4>
+                                @if(!isset($listNguoiChoiRestore))
+                                <div style="display:flex;justify-content: center;align-items:center;">
+                                    <a style="margin-bottom:10px" href="{{ route('nguoi-choi.them-moi') }}" class="btn btn-info btn-rounded waves-effect waves-light">
+                                                <span class="btn-label">
+                                                <i class=" fas fa-plus">
+                                                </i>
+                                                </span>Thêm mới<i>
+                                                </i>
+                                    </a>
+                                    <a style="margin-bottom:10px;margin-left:10px" href="{{ route('nguoi-choi.restore') }}" class="btn btn-success btn-rounded waves-effect waves-light">
                                             <span class="btn-label">
-                                            <i class=" fas fa-plus">
+                                            <i class="mdi mdi-restore">
                                             </i>
-                                            </span>Thêm mới<i>
+                                            </span>Phục hồi<i>
                                             </i>
                                 </a>
-                                <table id="nguoiChoi-datatable" class="table dt-responsive nowrap">
+                                </div>
+                                @else
+                                <a style="margin-bottom:10px" href="{{ route('nguoi-choi.danh-sach') }}" class="btn btn-primary btn-rounded waves-effect waves-light">Trở về danh sách</a>
+                                @endif
+                                <table id="nguoiChoi-datatable" class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th></th>
                                             <th>ID</th>
                                             <th>Hình đại diện</th>
                                             <th>Tên đăng nhập</th>
@@ -31,17 +43,61 @@
                                             <th>Email</th>    
                                             <th>Điểm cao nhất</th>
                                             <th>Credit</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                 
                                 
                                     <tbody>
+                                    @if(isset($listNguoiChoiRestore))
+                                        <!-- restore -->
+                                        @foreach($listNguoiChoiRestore as $nguoiChoi)
+                                        <tr>
+                                            <td>{{ $nguoiChoi->id }}</td>
+                                            <td><img @if($nguoiChoi->hinh_dai_dien=="") src="{{ asset('assets/images/nguoi-choi/user-empty.png') }}" @else src="{{ asset('assets/images/nguoi-choi/'.$nguoiChoi->hinh_dai_dien)}}" @endif width="50px" class="rounded-circle"  alt=""></td>
+                                            <td>{{ $nguoiChoi->ten_dang_nhap }} </td>
+                                            <!-- <td>{{ $nguoiChoi->mat_khau}} </td> -->
+                                            <td>{{ $nguoiChoi->email}} </td>
+                                            <td>{{ $nguoiChoi->diem_cao_nhat }} </td>
+                                            <td>{{ $nguoiChoi->credit }} </td>
+                                            <td >
+                                            <a href="{{ route('nguoi-choi.xu-ly-restore',['id'=> $nguoiChoi->id]) }}"  class="btn btn-success waves-effect waves-light "><i class="mdi mdi-restore"></i></a>
+                                            <!-- <script type="text/javascript">
+                                                function del(){
+                                                    Swal.fire({
+                                                    title: 'có muốn khôi phục không?',
+                                                    text: "Bạn chắn với điều này chứ!",
+                                                    type: 'question',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#3085d6',
+                                                    cancelButtonColor: '#d33',
+                                                    confirmButtonText: 'Có',
+                                                    cancelButtonText:'Không'
+                                                    }).then((result) => {
+                                                    if (result.value) {
+                                                        window.location.href = "{{ route('nguoi-choi.xu-ly-restore',['id'=> $nguoiChoi->id]) }}";
+                                                    }
+                                                    })
+                                                };
+                                            </script> -->
+                                           </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <!-- danh sách-->
                                         @foreach($listNguoiChoi as $nguoiChoi)
                                         <tr>
+                                            <td>{{ $nguoiChoi->id }}</td>
+                                            <td><img @if($nguoiChoi->hinh_dai_dien=="") src="{{ asset('assets/images/nguoi-choi/user-empty.png') }}" @else src="{{ asset('assets/images/nguoi-choi/'.$nguoiChoi->hinh_dai_dien)}}" @endif width="50px" class="rounded-circle"  alt=""></td>
+                                            <td>{{ $nguoiChoi->ten_dang_nhap }} </td>
+                                            <!-- <td>{{ $nguoiChoi->mat_khau}} </td> -->
+                                            <td>{{ $nguoiChoi->email}} </td>
+                                            <td>{{ $nguoiChoi->diem_cao_nhat }} </td>
+                                            <td>{{ $nguoiChoi->credit }} </td>
                                             <td >
                                             <a href="{{ route('nguoi-choi.cap-nhat',['id'=> $nguoiChoi->id]) }}" class="btn btn-purple waves-effect waves-light"><i class=" mdi mdi-pencil-outline"></i></a>
-                                            <button onclick="del()" type="button" class="btn btn-danger waves-effect waves-light "><i class="fe-trash-2"></i></button>
-                                            <script type="text/javascript">
+                                            <button data-href="{{ route('nguoi-choi.xoa',['id'=> $nguoiChoi->id]) }}" type="button" class="btn btn-danger waves-effect waves-light change-status"><i class="fe-trash-2"></i></button>
+                                            <!-- <script type="text/javascript">
                                                 function del(){
                                                     Swal.fire({
                                                     title: 'có muốn xóa không?',
@@ -58,18 +114,11 @@
                                                     }
                                                     })
                                                 };
-                                            </script>
+                                            </script> -->
                                            </td>
-                                            <td>{{ $nguoiChoi->id }}</td>
-                                            <td><img src="{{ asset('assets/images/nguoi-choi/'.$nguoiChoi->hinh_dai_dien)}}" width="50px" class="rounded-circle"  alt=""></td>
-                                            <td>{{ $nguoiChoi->ten_dang_nhap }} </td>
-                                            <!-- <td>{{ $nguoiChoi->mat_khau}} </td> -->
-                                            <td>{{ $nguoiChoi->email}} </td>
-                                            <td>{{ $nguoiChoi->diem_cao_nhat }} </td>
-                                            <td>{{ $nguoiChoi->credit }} </td>
-                                            
                                         </tr>
                                         @endforeach
+                                    @endif
                                     </tbody>
                                 </table>
 

@@ -18,6 +18,7 @@ class NguoiChoiRequest extends FormRequest
             'ten_dang_nhap'=>'required|unique:nguoi_choi,ten_dang_nhap|string|max:100',
             'mat_khau'=>'required|min:8|max:30',
             'email'=>'required|email',
+            'hinh_dai_dien'=>'image|mimes:jpeg,png,jpg,gif',
         ];
     }
     public function messages()
@@ -31,7 +32,9 @@ class NguoiChoiRequest extends FormRequest
             'mat_khau.min'=>'Mật khẩu phải ít nhất 8 ký tự',
             'mat_khau.max'=>'Mật khẩu không quá 30 ký tự',
             'email.required'=>'Email không được rỗng',
-            'email.email'=>'Email không đúng định dạng'
+            'email.email'=>'Email không đúng định dạng',
+            'hinh_dai_dien.image' => 'Yêu cầu phải là ảnh',
+            'hinh_dai_dien.mimes'=> 'Không đúng định dạng ảnh',
         ];
     }
 }

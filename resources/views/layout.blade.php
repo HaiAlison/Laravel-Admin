@@ -107,6 +107,7 @@
         @yield('js')
         <!-- App js-->
         <script src="{{ asset('assets/js/app.min.js') }}"></script>
+        <script src="{{ asset('assets/js/pages/sw_del.js') }}"></script>
         @if(Session::has('thongbao'))
         <script>
         sessionn();

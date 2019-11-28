@@ -12,7 +12,9 @@
                     <div class="col-12" >
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Danh sách gói credit</h4>
+                                <h4 class="header-title">Danh sách gói credit @if(isset($listGoiCreditRestore)) đã xóa @endif</h4>
+                                @if(!isset($listGoiCreditRestore))
+                                <div style="display:flex;justify-content: center;align-items:center;">
                                 <a style="margin-bottom:10px" href="{{ route('goi-credit.them-moi') }}" class="btn btn-info btn-rounded waves-effect waves-light">
                                             <span class="btn-label">
                                             <i class=" fas fa-plus">
@@ -20,6 +22,17 @@
                                             </span>Thêm mới<i>
                                             </i>
                                 </a>
+                                    <a style="margin-bottom:10px;margin-left:10px" href="{{ route('goi-credit.restore') }}" class="btn btn-success btn-rounded waves-effect waves-light">
+                                            <span class="btn-label">
+                                            <i class="mdi mdi-restore">
+                                            </i>
+                                            </span>Phục hồi<i>
+                                            </i>
+                                </a>
+                                </div>
+                                @else
+                                <a style="margin-bottom:10px" href="{{ route('goi-credit.danh-sach') }}" class="btn btn-primary btn-rounded waves-effect waves-light">Trở về danh sách</a>
+                                @endif
                                 <table id="goiCredit-datatable" class="table dt-responsive nowrap">
                                     <thead>
                                         <tr>
@@ -33,6 +46,39 @@
                                 
                                 
                                     <tbody>
+                                    @if(isset($listGoiCreditRestore))
+                                        <!-- restore -->
+                                        @foreach($listGoiCreditRestore as $goiCredit)
+                                        <tr>
+                                            <td>{{ $goiCredit->id}} </td>
+                                            <td>{{ $goiCredit->ten_goi}} </td>
+                                            <td>{{ $goiCredit->credit}} </td>
+                                            <td>{{ $goiCredit->so_tien}} </td>
+                                            <td>
+                                            <a href="{{ route('goi-credit.xu-ly-restore',['id'=> $goiCredit->id]) }}"  class="btn btn-success waves-effect waves-light "><i class="mdi mdi-restore"></i></a>
+                                            <!-- <script type="text/javascript">
+                                                function del(){
+                                                    Swal.fire({
+                                                    title: 'có muốn khôi phục không?',
+                                                    text: "Bạn chắn với điều này chứ!",
+                                                    type: 'question',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#3085d6',
+                                                    cancelButtonColor: '#d33',
+                                                    confirmButtonText: 'Có',
+                                                    cancelButtonText:'Không'
+                                                    }).then((result) => {
+                                                    if (result.value) {
+                                                        window.location.href = "{{ route('goi-credit.xu-ly-restore',['id'=> $goiCredit->id]) }}";
+                                                    }
+                                                    })
+                                                };
+                                            </script> -->
+                                           </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <!-- phục hồi -->
                                         @foreach($listGoiCredit as $goiCredit)
                                         <tr>
                                             <td>{{ $goiCredit->id}} </td>
@@ -41,8 +87,8 @@
                                             <td>{{ $goiCredit->so_tien}} </td>
                                             <td>
                                             <a href="{{ route('goi-credit.cap-nhat',['id'=> $goiCredit->id]) }}" class="btn btn-purple waves-effect waves-light"><i class=" mdi mdi-pencil-outline"></i></a>
-                                            <button onclick="del()" type="button" class="btn btn-danger waves-effect waves-light "><i class="fe-trash-2"></i></button>
-                                            <script type="text/javascript">
+                                            <button data-href="{{ route('goi-credit.xoa',['id'=> $goiCredit->id]) }}" type="button" class="btn btn-danger waves-effect waves-light change-status"><i class="fe-trash-2"></i></button>
+                                            <!-- <script type="text/javascript">
                                                 function del(){
                                                     Swal.fire({
                                                     title: 'có muốn xóa không?',
@@ -59,10 +105,11 @@
                                                     }
                                                     })
                                                 };
-                                            </script>
+                                            </script> -->
                                            </td>
                                         </tr>
                                         @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
 

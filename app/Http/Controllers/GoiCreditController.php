@@ -56,4 +56,13 @@ class GoiCreditController extends Controller
 
         return redirect()->route('goi-credit.danh-sach')->with('thongbao','Xóa gói credit thành công');
     }
+    public function showDeleted(){
+        $listGoiCreditRestore = GoiCredit::onlyTrashed()->get();
+        return view('goi-credit.ds-goi-credit', compact('listGoiCreditRestore'));
+    }
+    
+    public function reStore($id){
+        GoiCredit::withTrashed()->find($id)->restore();
+        return redirect()->route('goi-credit.danh-sach')->with('thongbao','Khôi phục gói credit viên thành công');
+    }
 }

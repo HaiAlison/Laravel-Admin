@@ -13,14 +13,27 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Danh sách quản trị viên</h4>
-                                <a style="margin-bottom:10px" href="{{ route('quan-tri-vien.them-moi') }}" class="btn btn-info btn-rounded waves-effect waves-light">
+                                <h4 class="header-title">Danh sách quản trị viên @if(isset($listQuanTriVienRestore)) đã xóa @endif</h4>
+                                @if(!isset($listQuanTriVienRestore))
+                                <div style="display:flex;justify-content: center;align-items:center;">
+                                    <a style="margin-bottom:10px" href="{{ route('quan-tri-vien.them-moi') }}" class="btn btn-info btn-rounded waves-effect waves-light">
+                                                <span class="btn-label">
+                                                <i class=" fas fa-plus">
+                                                </i>
+                                                </span>Thêm mới<i>
+                                                </i>
+                                    </a>
+                                    <a style="margin-bottom:10px;margin-left:10px" href="{{ route('quan-tri-vien.restore') }}" class="btn btn-success btn-rounded waves-effect waves-light">
                                             <span class="btn-label">
-                                            <i class=" fas fa-plus">
+                                            <i class="mdi mdi-restore">
                                             </i>
-                                            </span>Thêm mới<i>
+                                            </span>Phục hồi<i>
                                             </i>
                                 </a>
+                                </div>
+                                @else
+                                <a style="margin-bottom:10px" href="{{ route('linh-vuc.danh-sach') }}" class="btn btn-primary btn-rounded waves-effect waves-light">Trở về danh sách</a>
+                                @endif
                                 <div class="responsive-table-plugin">
                                 <div class="table-rep-plugin">
                                 <div class="table-responsive" data-pattern="priority-columns">
@@ -37,37 +50,37 @@
                                     </thead>
                                 
                                     <tbody>
-                                        @foreach($listQuanTriVien as $quanTriVien)
-                                        <tr>
-                                            <td>{{ $quanTriVien->id }}</td>
-                                            <td><img src="{{ asset('assets/images/quan-tri-vien/'.$quanTriVien->anh_dai_dien) }}" width="50px" style="border-radius:100%"  alt=""></td>
-                                            <td>{{ $quanTriVien->ten_dang_nhap }} </td>
-                                            <!-- <td>{{ $quanTriVien->mat_khau }} </td> -->
-                                            <td>{{ $quanTriVien->ho_ten }} </td>
-                                            <td>
-                                            <a href="{{ route('quan-tri-vien.cap-nhat',['id'=> $quanTriVien->id]) }}" class="btn btn-purple waves-effect waves-light"><i class=" mdi mdi-pencil-outline"></i></a>
-                                            <button onclick="del()" type="button" class="btn btn-danger waves-effect waves-light "><i class="fe-trash-2"></i></button>
-                                            <script type="text/javascript">
-                                                function del(){
-                                                    Swal.fire({
-                                                    title: 'có muốn xóa không?',
-                                                    text: "Bạn chắn với điều này chứ!",
-                                                    type: 'warning',
-                                                    showCancelButton: true,
-                                                    confirmButtonColor: '#3085d6',
-                                                    cancelButtonColor: '#d33',
-                                                    confirmButtonText: 'Có',
-                                                    cancelButtonText:'Không'
-                                                    }).then((result) => {
-                                                    if (result.value) {
-                                                        window.location.href = "{{ route('quan-tri-vien.xoa',['id'=> $quanTriVien->id]) }}";
-                                                    }
-                                                    })
-                                                };
-                                            </script>
-                                           </td>
-                                        </tr>
-                                        @endforeach
+                                    @if(isset($listQuanTriVienRestore))
+                                        <!-- Restore -->
+                                        @foreach($listQuanTriVienRestore as $quanTriVien)
+                                            <tr>
+                                                <td>{{ $quanTriVien->id }}</td>
+                                                <td><img @if($quanTriVien->anh_dai_dien=="") src="{{ asset('assets/images/quan-tri-vien/user-empty.png') }}" @else src="{{ asset('assets/images/quan-tri-vien/'.$quanTriVien->anh_dai_dien) }}" @endif width="50px" style="border-radius:100%"  alt=""></td>
+                                                <td>{{ $quanTriVien->ten_dang_nhap }} </td>
+                                                <td>{{ $quanTriVien->ho_ten }} </td>
+                                                <td>
+                                                <a href="{{ route('quan-tri-vien.xu-ly-restore',['id'=> $quanTriVien->id]) }}" class="btn btn-success waves-effect waves-light"><i class="mdi mdi-restore"></i></a>
+                                                <button data-href="{{ route('quan-tri-vien.xu-ly-xoa-hoan-toan',['id'=> $quanTriVien->id]) }}" type="button" class="btn btn-dark waves-effect waves-light force-delete"><i class="mdi mdi-trash-can"></i></button>
+                                            </td>
+                                            </tr>
+                                            @endforeach
+                                    @else
+                                    <!-- Danh sách Quản trị viên -->
+                                            @foreach($listQuanTriVien as $quanTriVien)
+                                                <tr>
+                                                    <td>{{ $quanTriVien->id }}</td>
+                                                    <td><img @if($quanTriVien->anh_dai_dien=="") src="{{ asset('assets/images/quan-tri-vien/user-empty.png') }}" @else src="{{ asset('assets/images/quan-tri-vien/'.$quanTriVien->anh_dai_dien) }}" @endif width="50px" style="border-radius:100%"  alt=""></td>
+                                                    <td>{{ $quanTriVien->ten_dang_nhap }} </td>
+                                                    <!-- <td>{{ $quanTriVien->mat_khau }} </td> -->
+                                                    <td>{{ $quanTriVien->ho_ten }} </td>
+                                                    <td>
+                                                    <a href="{{ route('quan-tri-vien.cap-nhat',['id'=> $quanTriVien->id]) }}" class="btn btn-purple waves-effect waves-light"><i class=" mdi mdi-pencil-outline"></i></a>
+                                                    <a href="{{ route('quan-tri-vien.xoa',['id'=> $quanTriVien->id]) }}" class="btn btn-danger waves-effect waves-light "><i class="fe-trash-2"></i></a>
+                                                </td>
+                                                </tr>
+                                                @endforeach
+                                            @endif
+                                        
                                     </tbody>
                                 </table>
                         </div>

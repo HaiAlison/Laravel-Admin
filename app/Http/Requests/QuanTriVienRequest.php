@@ -16,7 +16,7 @@ class QuanTriVienRequest extends FormRequest
         return [
             'ten_dang_nhap'=>'required|unique:quan_tri_vien,ten_dang_nhap|max:100',
             'mat_khau'=>'required|min:6|max:30',
-            'anh_dai_dien'=>'required|image|mimes:jpeg,png,jpg,gif',
+            'anh_dai_dien'=>'image|mimes:jpeg,png,jpg,gif',
             'ho_ten'=>'required|string'
         ];
     }
@@ -29,7 +29,7 @@ class QuanTriVienRequest extends FormRequest
             'mat_khau.required' => 'Mật khẩu không được rỗng',
             'mat_khau.min' => 'Mật khẩu ít nhất 6 ký tự',
             'mat_khau.max' => 'Mật khẩu tối đa 30 ký tự',
-            'anh_dai_dien.required' => 'Vui lòng hãy chọn 1 ảnh',
+            // 'anh_dai_dien.required' => 'Vui lòng hãy chọn 1 ảnh',
             'anh_dai_dien.image' => 'Yêu cầu phải là ảnh',
             'anh_dai_dien.mimes'=> 'Không đúng định dạng ảnh',
             'ho_ten.required' => 'Họ tên không được rỗng',

@@ -37,7 +37,7 @@
                                         <div class="form-group">
                                         <label for="anh_dai_dien">Hình đại diện</label>
                                         <input type="file" class="form-control" id="anh_dai_dien" name="anh_dai_dien"
-                                        @if(isset($quanTriVien)) value="{{ $quanTriVien->anh_dai_dien }}"@endif
+                                        
                                         >
                                         </div>
                                     </div>

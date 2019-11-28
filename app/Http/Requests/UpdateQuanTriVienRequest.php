@@ -15,7 +15,7 @@ class UpdateQuanTriVienRequest extends FormRequest
     {
         return [
             'ho_ten'=>'required|string',
-            'anh_dai_dien'=>'required|image|mimes:jpeg,png,jpg,gif',
+            'anh_dai_dien'=>'image|mimes:jpeg,png,jpg,gif',
         ];
     }
     public function messages()
@@ -23,7 +23,7 @@ class UpdateQuanTriVienRequest extends FormRequest
         return [
             'ho_ten.required' => 'Họ tên không được rỗng',
             'ho_ten.string' => 'Họ tên phải là ký tự',
-            'anh_dai_dien.required' => 'Vui lòng hãy chọn 1 ảnh',
+            // 'anh_dai_dien.required' => 'Vui lòng hãy chọn 1 ảnh',
             'anh_dai_dien.image' => 'Yêu cầu phải là ảnh',
             'anh_dai_dien.mimes'=> 'Không đúng định dạng ảnh',
         ];

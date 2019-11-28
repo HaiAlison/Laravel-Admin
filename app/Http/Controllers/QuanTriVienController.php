@@ -165,4 +165,20 @@ class QuanTriVienController extends Controller
         $request->session()->forget('thong_bao');
         return redirect()->route('dashboard');
     }
+
+    public function showDeleted(){
+        $listQuanTriVienRestore = QuanTriVien::onlyTrashed()->get();
+        return view('quan-tri-vien.ds-quan-tri-vien', compact('listQuanTriVienRestore'));
+    }
+    
+    public function reStore($id){
+        $listQuanTriVienRestore=QuanTriVien::withTrashed()->find($id);
+        $listQuanTriVienRestore->restore();
+        return redirect()->route('quan-tri-vien.danh-sach')->with('thongbao','Khôi phục quản trị viên thành công');
+    }
+
+    public function forceDelete($id){
+        QuanTriVien::withTrashed()->find($id)->forceDelete();
+        return redirect()->route('quan-tri-vien.danh-sach')->with('thongbao','Xóa vĩnh viễn quản trị viên thành công');;
+    }
 }

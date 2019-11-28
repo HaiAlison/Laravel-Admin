@@ -12,14 +12,27 @@
                     <div class="col-12" >
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="header-title">Danh sách câu hỏi</h4>
-                                <a style="margin-bottom:10px" href="{{ route('cau-hoi.them-moi') }}" class="btn btn-info btn-rounded waves-effect waves-light">
+                                <h4 class="header-title">Danh sách câu hỏi @if(isset($listCauHoiRestore)) đã xóa @endif</h4> 
+                                @if(!isset($listCauHoiRestore))
+                                <div style="display:flex;justify-content: center;align-items:center;">
+                                    <a style="margin-bottom:10px" href="{{ route('cau-hoi.them-moi') }}" class="btn btn-info btn-rounded waves-effect waves-light">
+                                                <span class="btn-label">
+                                                <i class=" fas fa-plus">
+                                                </i>
+                                                </span>Thêm mới<i>
+                                                </i>
+                                    </a> 
+                                    <a style="margin-bottom:10px;margin-left:10px" href="{{ route('cau-hoi.restore') }}" class="btn btn-success btn-rounded waves-effect waves-light">
                                             <span class="btn-label">
-                                            <i class=" fas fa-plus">
+                                            <i class="mdi mdi-restore">
                                             </i>
-                                            </span>Thêm mới<i>
+                                            </span>Phục hồi<i>
                                             </i>
-                                </a>   
+                                </a>
+                                </div>
+                                @else 
+                                <a style="margin-bottom:10px" href="{{ route('cau-hoi.danh-sach') }}" class="btn btn-primary btn-rounded waves-effect waves-light">Trở về danh sách</a>
+                                @endif
                                 <div class="responsive-table-plugin">
                                 <div class="table-rep-plugin">
                                 <div class="table-responsive" data-pattern="priority-columns">
@@ -40,6 +53,47 @@
                                 
                                 
                                     <tbody>
+                                    @if(isset($listCauHoiRestore))
+                                        <!-- Resore -->
+                                        @foreach($listCauHoiRestore as $cauHoi)
+                                        <tr>
+                                            <td>{{ $cauHoi->id }}</td>
+                                            <td>{{ $cauHoi->noi_dung }} </td>
+                                            <td> @foreach($listLinhVuc as $linhVuc)
+                                            @if($linhVuc->id == $cauHoi->linh_vuc_id)
+                                            {{ $linhVuc->ten_linh_vuc }}
+                                            @endif
+                                            @endforeach </td>
+                                            <td>{{ $cauHoi->phuong_an_a }} </td>
+                                            <td>{{ $cauHoi->phuong_an_b }} </td>
+                                            <td>{{ $cauHoi->phuong_an_c }} </td>
+                                            <td>{{ $cauHoi->phuong_an_d }} </td>
+                                            <td>{{ $cauHoi->dap_an }} </td>
+                                            <td >
+                                            <a href="{{ route('cau-hoi.xu-ly-restore',['id'=> $cauHoi->id]) }}"  class="btn btn-success waves-effect waves-light "><i class="mdi mdi-restore"></i></a>
+                                            <!-- <script type="text/javascript">
+                                                function del(){
+                                                    Swal.fire({
+                                                    title: 'có muốn khôi phục không?',
+                                                    text: "Bạn chắn với điều này chứ!",
+                                                    type: 'question',
+                                                    showCancelButton: true,
+                                                    confirmButtonColor: '#3085d6',
+                                                    cancelButtonColor: '#d33',
+                                                    confirmButtonText: 'Có',
+                                                    cancelButtonText:'Không'
+                                                    }).then((result) => {
+                                                    if (result.value) {
+                                                        window.location.href = "{{ route('cau-hoi.xu-ly-restore',['id'=> $cauHoi->id]) }}";
+                                                    }
+                                                    })
+                                                };
+                                            </script> -->
+                                           </td>
+                                        </tr>
+                                        @endforeach
+                                    @else
+                                        <!-- phục hồi -->
                                         @foreach($listCauHoi as $cauHoi)
                                         <tr>
                                             <td>{{ $cauHoi->id }}</td>
@@ -56,8 +110,8 @@
                                             <td>{{ $cauHoi->dap_an }} </td>
                                             <td >
                                             <a href="{{ route('cau-hoi.cap-nhat',['id'=> $cauHoi->id]) }}" class="btn btn-purple waves-effect waves-light"><i class=" mdi mdi-pencil-outline"></i></a>
-                                            <button onclick="del()" type="button" class="btn btn-danger waves-effect waves-light "><i class="fe-trash-2"></i></button>
-                                            <script type="text/javascript">
+                                            <button data-href="{{ route('cau-hoi.xoa',['id'=> $cauHoi->id]) }}" type="button" class="btn btn-danger waves-effect waves-light change-status"><i class="fe-trash-2"></i></button>
+                                            <!-- <script type="text/javascript">
                                                 function del(){
                                                     Swal.fire({
                                                     title: 'có muốn xóa không?',
@@ -74,10 +128,11 @@
                                                     }
                                                     })
                                                 };
-                                            </script>
+                                            </script> -->
                                            </td>
                                         </tr>
                                         @endforeach
+                                    @endif
                                     </tbody>
                                 </table>
                             </div>

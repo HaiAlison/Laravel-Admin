@@ -16,13 +16,16 @@ class UpdateNguoiChoiRequest extends FormRequest
         // chưa validation ảnh đại diện
         return [
             'email'=>'required|email',
+            'hinh_dai_dien'=>'image|mimes:jpeg,png,jpg,gif',
         ];
     }
     public function messages()
     {
         return [
             'email.required'=>'Email không được rỗng',
-            'email.email'=>'Email không đúng định dạng'
+            'email.email'=>'Email không đúng định dạng',
+            'hinh_dai_dien.image' => 'Yêu cầu phải là ảnh',
+            'hinh_dai_dien.mimes'=> 'Không đúng định dạng ảnh',
         ];
     }
 }

@@ -44,6 +44,8 @@ Route::middleware('auth')->group(function(){
             Route::get('cap-nhat/{id}', 'LinhVucController@edit')->name('cap-nhat');
             Route::post('cap-nhat/{id}', 'LinhVucController@update')->name('xu-ly-cap-nhat');   
             Route::get('xoa/{id}', 'LinhVucController@destroy')->name('xoa');
+            Route::get('restore', 'LinhVucController@showDeleted')->name('restore');
+            Route::get('restore/{id}', 'LinhVucController@reStore')->name('xu-ly-restore');
         });
     });
 
@@ -56,6 +58,8 @@ Route::middleware('auth')->group(function(){
             Route::get('cap-nhat/{id}', 'CauHoiController@edit')->name('cap-nhat');
             Route::post('cap-nhat/{id}', 'CauHoiController@update')->name('xu-ly-cap-nhat');   
             Route::get('xoa/{id}', 'CauHoiController@destroy')->name('xoa');
+            Route::get('restore', 'CauHoiController@showDeleted')->name('restore');
+            Route::get('restore/{id}', 'CauHoiController@reStore')->name('xu-ly-restore');
         });
     });
     //NguoiChoi
@@ -67,6 +71,8 @@ Route::middleware('auth')->group(function(){
             Route::get('cap-nhat/{id}','NguoiChoiController@edit')->name('cap-nhat');
             Route::post('cap-nhat/{id}', 'NguoiChoiController@update')->name('xu-ly-cap-nhat');   
             Route::get('xoa/{id}', 'NguoiChoiController@destroy')->name('xoa');
+            Route::get('restore', 'NguoiChoiController@showDeleted')->name('restore');
+            Route::get('restore/{id}', 'NguoiChoiController@reStore')->name('xu-ly-restore');
         });
     });
     //LuotChoi
@@ -92,6 +98,8 @@ Route::middleware('auth')->group(function(){
             Route::get('cap-nhat/{id}', 'GoiCreditController@edit')->name('cap-nhat');
             Route::post('cap-nhat/{id}', 'GoiCreditController@update')->name('xu-ly-cap-nhat');   
             Route::get('xoa/{id}', 'GoiCreditController@destroy')->name('xoa');
+            Route::get('restore', 'GoiCreditController@showDeleted')->name('restore');
+            Route::get('restore/{id}', 'GoiCreditController@reStore')->name('xu-ly-restore');
         });
     });
     //Lich Su Mua Credit
@@ -167,6 +175,9 @@ Route::middleware('auth')->group(function(){
             Route::get('xoa-session', 'QuanTriVienController@xoaSession')->name('xoa-session');
             Route::get('doi-mat-khau', 'QuanTriVienController@showMatKhau')->name('doi-mat-khau');
             Route::post('doi-mat-khau/{id}', 'QuanTriVienController@doiMatKhau')->name('xu-ly-doi-mat-khau');
+            Route::get('restore', 'QuanTriVienController@showDeleted')->name('restore');
+            Route::get('restore/{id}', 'QuanTriVienController@reStore')->name('xu-ly-restore');
+            Route::get('xoa-hoan-toan/{id}', 'QuanTriVienController@forceDelete')->name('xu-ly-xoa-hoan-toan');
         });
     });
     //XoaSession

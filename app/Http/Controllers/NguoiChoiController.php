@@ -95,4 +95,13 @@ class NguoiChoiController extends Controller
 
         return redirect()->route('nguoi-choi.danh-sach')->with('thongbao','Xóa người chơi thành công');
     }
+    public function showDeleted(){
+        $listNguoiChoiRestore = NguoiChoi::onlyTrashed()->get();
+        return view('nguoi-choi.ds-nguoi-choi', compact('listNguoiChoiRestore'));
+    }
+    
+    public function reStore($id){
+        NguoiChoi::withTrashed()->find($id)->restore();
+        return redirect()->route('nguoi-choi.danh-sach')->with('thongbao','Khôi phục người chơi thành công');
+    }
 }

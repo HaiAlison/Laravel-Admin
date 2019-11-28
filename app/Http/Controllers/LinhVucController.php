@@ -49,4 +49,13 @@ class LinhVucController extends Controller
 
         return redirect()->route('linh-vuc.danh-sach')->with('thongbao','Xóa lĩnh vực thành công');
     }
+    public function showDeleted(){
+        $listLinhVucRestore = LinhVuc::onlyTrashed()->get();
+        return view('linh-vuc.ds-linh-vuc', compact('listLinhVucRestore'));
+    }
+    
+    public function reStore($id){
+        LinhVuc::withTrashed()->find($id)->restore();
+        return redirect()->route('linh-vuc.danh-sach')->with('thongbao','Khôi phục lĩnh vực thành công');
+    }
 }
